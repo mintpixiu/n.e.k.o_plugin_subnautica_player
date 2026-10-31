@@ -1,4 +1,4 @@
-﻿# 发布手册 —— subnautica_player
+# 发布手册 —— subnautica_player
 
 > 当前状态：**只上传源码仓库，暂不发布到 N.E.K.O 插件市场。**
 > 没有执行 `neko-plugin publish`，没有创建 Release，没有提交市场审核。
@@ -12,8 +12,10 @@
 | 官方清单检查 | `uv run neko-plugin check subnautica_player` | 0 error（仅 git 未配置 remote 警告） |
 | 发布前完整检查 | `uv run neko-plugin check -r subnautica_player` | passed |
 | 插件本地测试 | `pytest tests -q` | 61 passed |
-| 打包 | 官方 CLI | `subnautica_player.neko-plugin` |
-| payload hash | 官方 CLI | 已校验 |
+| GitHub CI | Verify N.E.K.O Plugin，run `41173339152` | **success**（check --release + payload hash + tests） |
+| 打包 | 官方 CLI / CI artifact | `subnautica_player.neko-plugin` |
+| package sha256 | CI artifact | `dbaf41180f7ff6053f7ef0721456697672797b104a8771089faa06cc7a6c00f9` |
+| payload hash | 官方 CLI | `594ab37daed352092972c0591b05d4940957b86e4111bdef63d22ac586ad2561` |
 | 真实 SDK 实例化 | 用宿主 `plugin.sdk.plugin` | 成功 |
 | 真实截图/窗口/HUD | 本机 Subnautica 主菜单 | 成功；菜单守卫生效 |
 
