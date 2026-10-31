@@ -11,7 +11,7 @@
 |------|-------------|------|
 | 官方清单检查 | `uv run neko-plugin check subnautica_player` | 0 error（仅 git 未配置 remote 警告） |
 | 发布前完整检查 | `uv run neko-plugin check -r subnautica_player` | passed |
-| 插件本地测试 | `pytest tests -q` | 62 passed |
+| 插件本地测试 | `pytest tests -q` | 64 passed |
 | GitHub CI | Verify N.E.K.O Plugin，run `41173339152` | **success**（check --release + payload hash + tests） |
 | 打包 | 官方 CLI / CI artifact | `subnautica_player.neko-plugin` |
 | package sha256 | CI artifact | `dbaf41180f7ff6053f7ef0721456697672797b104a8771089faa06cc7a6c00f9` |

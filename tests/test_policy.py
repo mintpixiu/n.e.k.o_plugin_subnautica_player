@@ -54,10 +54,17 @@ class TestCommands:
         assert policy.command_ops("按E进舱").ops[0].key == "e"
         assert policy.command_ops("打开PDA").ops[0].key == "tab"
 
-    def test_look_right_is_negative_dx(self):
-        op = new_policy().command_ops("往右看").ops[0]
-        assert op.kind == "look"
-        assert op.dx < 0
+    def test_look_right_is_positive_dx_and_left_is_negative(self):
+        right = new_policy().command_ops("往右看").ops[0]
+        left = new_policy().command_ops("往左看").ops[0]
+        assert right.kind == "look" and right.dx > 0
+        assert left.kind == "look" and left.dx < 0
+
+    def test_sprint_is_one_simultaneous_chord(self):
+        command = new_policy().command_ops("冲刺")
+        assert len(command.ops) == 1
+        assert command.ops[0].kind == "chord"
+        assert command.ops[0].key == "w+shift"
 
     def test_slot_number(self):
         command = new_policy().command_ops("按3")

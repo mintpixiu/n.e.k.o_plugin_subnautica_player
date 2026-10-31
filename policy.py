@@ -87,6 +87,8 @@ class Op:
     def label(self) -> str:
         if self.kind == "hold":
             return f"按住 {self.key} {self.seconds:.1f}s"
+        if self.kind == "chord":
+            return f"同时按住 {self.key} {self.seconds:.1f}s"
         if self.kind == "tap":
             return f"按 {self.key}"
         if self.kind == "look":
@@ -355,15 +357,20 @@ class PlayPolicy:
         # Modifiers first.
         sprint = any(word in normalized for word in ("冲刺", "加速", "sprint", "快游"))
         if sprint:
-            ops = self._hold("forward", min(6.0, default_seconds + 1.0))
-            ops += [Op(kind="hold", key=self._key("sprint") or "shift", seconds=min(6.0, default_seconds + 1.0))]
-            return Command(raw, ops, "向前冲刺")
+            seconds_value = min(6.0, default_seconds + 1.0)
+            forward = self._key("forward") or "w"
+            sprint_key = self._key("sprint") or "shift"
+            return Command(
+                raw,
+                [Op(kind="chord", key=f"{forward}+{sprint_key}", seconds=seconds_value, note="sprint")],
+                "向前冲刺",
+            )
 
-        # Look commands.
+        # Look commands.  Positive mouse dx turns right; positive dy turns down.
         if any(word in normalized for word in ("左看", "左转", "看左边", "lookleft", "turnleft")):
-            return Command(raw, self._look(45), "向左转 45°")
+            return Command(raw, self._look(-45), "向左转 45°")
         if any(word in normalized for word in ("右看", "右转", "看右边", "lookright", "turnright")):
-            return Command(raw, self._look(-45), "向右转 45°")
+            return Command(raw, self._look(45), "向右转 45°")
         if any(word in normalized for word in ("抬头", "向上看", "看上面", "lookup")):
             return Command(raw, self._look(0, -20), "抬头")
         if any(word in normalized for word in ("低头", "向下看", "看下面", "lookdown")):

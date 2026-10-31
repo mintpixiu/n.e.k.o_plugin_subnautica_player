@@ -261,13 +261,13 @@ DXGI frame           = 2560x1600
 | 文件 | 覆盖 | 数量 |
 |------|------|------|
 | `test_contract.py` | 清单/工具/入口/安全默认/无依赖/无启动副作用 | 15 |
-| `test_policy.py` | 指令解析、优先级、低氧、受伤、卡住、aim | 18 |
+| `test_policy.py` | 指令解析、优先级、低氧、受伤、卡住、aim、冲刺组合键 | 19 |
 | `test_hud.py` | 四环识别、消耗比例、低警告、无 HUD 不猜 | 4 |
 | `test_planner.py` | 初始阶段、打勾持久化、焦点、生态区、损坏日志、切游戏 | 7 |
 | `test_discovery.py` | 别名、进程/窗口映射、排除 Subnautica 2、最小化 | 7 |
-| `test_service.py` | 等待模式、命令队列、停手松键、恢复、UI 门禁、窗口偏移、序列上限 | 10 |
+| `test_service.py` | 等待模式、命令队列、停手松键、恢复、UI 门禁、窗口偏移、序列上限 | 11 |
 | `test_smoke.py` | 清单存在 | 1 |
-| 合计 |  | **62** |
+| 合计 |  | **64** |
 
 全部离线：不启动游戏、不调用真实 `SendInput`、不依赖 N.E.K.O 源码（conftest 提供严格 SDK 桩）。
 
@@ -292,7 +292,7 @@ DXGI frame           = 2560x1600
 | 项目 | 结果 |
 |------|------|
 | `neko-plugin check --release` | passed；payload hash 校验通过 |
-| 插件测试 | 62 passed |
+| 插件测试 | 64 passed |
 | 真实 SDK 实例化 | 成功；16 个 LLM 工具注册 |
 | 真实窗口发现 | 进程快照只看到 33 个进程时，窗口兜底找到 `Subnautica`（UnityWndClass） |
 | 真实截屏 | DXGI/GDI/Pillow 均 2560×1600 |

@@ -630,6 +630,18 @@ class SubnauticaService:
                             return
                     finally:
                         injector.key_up(op.key)
+                elif op.kind == "chord":
+                    keys = [part.strip() for part in op.key.split("+") if part.strip()]
+                    if not keys:
+                        continue
+                    for key in keys:
+                        injector.key_down(key)
+                    try:
+                        if await self._sleep_watched(max(0.01, op.seconds)):
+                            return
+                    finally:
+                        for key in reversed(keys):
+                            injector.key_up(key)
                 elif op.kind == "click":
                     injector.click(button=op.button)
                     await asyncio.sleep(0.05)
@@ -737,6 +749,12 @@ class SubnauticaService:
         else:
             self._blind_ticks = 0
 
+        if self._has_entered_gameplay:
+            # Keep the oxygen clock honest while the player is driving, while
+            # a PDA is open, or while the catgirl is soft-yielded.  The policy
+            # does not press keys in those states, but the timer must not freeze.
+            self._update_underwater(features)
+
         if self.cfg.yield_on_human_input and self._mode in ("playing", "soft_yield"):
             keys = self._human_keys()
             if keys:
@@ -796,13 +814,6 @@ class SubnauticaService:
             self._mode = "playing"
         self._played_seconds += dt
         self._planner.tick_session(self._played_seconds)
-        if features.underwater:
-            if not self._underwater_since:
-                self._underwater_since = time.time()
-            self._underwater_seconds = time.time() - self._underwater_since
-        else:
-            self._underwater_since = 0.0
-            self._underwater_seconds = 0.0
 
         snapshot = self._planner.snapshot()
         decision = self._policy.decide(
@@ -873,6 +884,15 @@ class SubnauticaService:
     # UI classification / menu
     # ------------------------------------------------------------------
 
+    def _update_underwater(self, features) -> None:
+        if features.underwater:
+            if not self._underwater_since:
+                self._underwater_since = time.time()
+            self._underwater_seconds = time.time() - self._underwater_since
+        else:
+            self._underwater_since = 0.0
+            self._underwater_seconds = 0.0
+
     def _classify_ui(self, features, hud, cursor_visible: bool) -> str:
         if features.black:
             return "loading"
@@ -924,10 +944,12 @@ class SubnauticaService:
             return
         injector = self._ensure_injector()
         try:
-            injector.tap(self._policy._key("exit") if self._policy else "e", hold_seconds=0.06)
+            # Escape closes Subnautica's pause menu.  Do not use E here: E
+            # enters/exits a vehicle and could change the player's situation.
+            injector.tap("ESC", hold_seconds=0.06)
             self._last_menu_press_at = time.time()
             self._menu_ticks = 0
-            self._event("menu-resume", "escape/e")
+            self._event("menu-resume", "escape")
         except Exception as exc:
             self._note_input_blocked(exc)
 
@@ -1102,7 +1124,18 @@ class SubnauticaService:
             action = str(item.get("action") or item.get("kind") or "").strip().lower()
             seconds = _as_float(item.get("seconds"), 0.0, low=0.0, high=8.0)
             key = str(item.get("key") or "").strip()
-            if action in ("forward", "back", "left", "right", "up", "down", "sprint"):
+            if action == "sprint":
+                forward = self._policy._key("forward") or "w"
+                sprint_key = self._policy._key("sprint") or "shift"
+                ops.append(policy_mod.Op(
+                    kind="chord",
+                    key=f"{forward}+{sprint_key}",
+                    seconds=seconds or 1.5,
+                    note="sprint",
+                ))
+                total_seconds += seconds or 1.5
+                continue
+            if action in ("forward", "back", "left", "right", "up", "down"):
                 key = self._policy._key(action)
                 seconds = seconds or 1.0
             elif action in ("hold", "tap"):

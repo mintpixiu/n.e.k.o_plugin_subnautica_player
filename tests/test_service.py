@@ -182,6 +182,18 @@ def test_ui_click_adds_window_offset_for_windowed_capture(tmp_path, monkeypatch)
     assert service._injector.clicks[-1][:2] == (160, 240)
 
 
+def test_sequence_sprint_holds_both_keys(tmp_path, monkeypatch):
+    service = make_service(tmp_path, monkeypatch)
+    service._mode = "playing"
+    service._has_entered_gameplay = True
+    service._capture_frame = _fake_frame  # type: ignore[assignment]
+    service._refresh_after_ui = _async_none  # type: ignore[assignment]
+    result = asyncio.run(service.run_sequence([{"action": "sprint", "seconds": 0.1}]))
+    assert result["ok"] is True
+    pressed = [name for name, _ in service._injector.taps]
+    assert "w" in pressed and "shift" in pressed
+
+
 def test_sequence_runs_and_caps_length(tmp_path, monkeypatch):
     service = make_service(tmp_path, monkeypatch)
     service._mode = "playing"
