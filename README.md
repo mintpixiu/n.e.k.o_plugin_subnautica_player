@@ -195,7 +195,7 @@ Sunbeam/Aurora → 海蛾号/海卡车 → Degasi/大礁/Al-An → Lost River/�
 
 ```
 官方 CLI check --release              passed
-插件契约/策略/HUD/服务测试            61 passed
+插件契约/策略/HUD/服务测试            62 passed
 打包 payload hash 校验                passed
 真实宿主 SDK 实例化 + 16 个工具注册   passed
 真实窗口发现（进程快照受限时走窗口）  passed
@@ -229,7 +229,7 @@ subnautica_player/
 ├── prompts.py               # 本地化 cue + 主动解说 prompt
 ├── service.py               # 捕获/输入/循环/接管/叙事/工具编排
 ├── docs/quickstart.md       # 插件内指南
-├── tests/                   # 61 项离线测试
+├── tests/                   # 62 项离线测试
 ├── DESIGN.md
 └── PUBLISHING.md
 ```

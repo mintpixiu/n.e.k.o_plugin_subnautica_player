@@ -165,6 +165,23 @@ def test_ui_click_uses_cursor_in_pda(tmp_path, monkeypatch):
     assert service._injector.clicks[-1][:2] == (30, 60)
 
 
+def test_ui_click_adds_window_offset_for_windowed_capture(tmp_path, monkeypatch):
+    service = make_service(tmp_path, monkeypatch)
+    service._has_entered_gameplay = True
+    service._ui_kind = "pda"
+    service._full_frame_size = (1920, 1080)
+    service._latest_frame = capture.Frame(
+        image=np.zeros((80, 120, 3), dtype=np.uint8),
+        captured_at=time.time(),
+        backend="fake",
+        region=(100, 200, 220, 280),
+    )
+    service._refresh_after_ui = _async_none  # type: ignore[assignment]
+    result = asyncio.run(service.ui_click(0.5, 0.5))
+    assert result["ok"] is True
+    assert service._injector.clicks[-1][:2] == (160, 240)
+
+
 def test_sequence_runs_and_caps_length(tmp_path, monkeypatch):
     service = make_service(tmp_path, monkeypatch)
     service._mode = "playing"

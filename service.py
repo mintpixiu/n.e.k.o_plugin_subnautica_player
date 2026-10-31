@@ -251,6 +251,7 @@ class SubnauticaService:
         self._plan_steps: list[str] = []
 
         self._latest_frame: capture_mod.Frame | None = None
+        self._full_frame_size: tuple[int, int] = (0, 0)
         self._latest_features: vision_mod.FrameFeatures | None = None
         self._latest_hud = hud_mod.HudState()
         self._latest_decision: policy_mod.Decision | None = None
@@ -550,6 +551,7 @@ class SubnauticaService:
             frame = capturer.capture(region, retries=2)
         if frame is None:
             return None
+        self._full_frame_size = (int(frame.width), int(frame.height))
         frame = self._crop_to_window(frame)
         self._latest_frame = frame
         self._frames_seen += 1
@@ -1193,11 +1195,18 @@ class SubnauticaService:
             }
         fx = max(0.0, min(1.0, _as_float(x, 0.5)))
         fy = max(0.0, min(1.0, _as_float(y, 0.5)))
-        px, py = int(fx * frame.width), int(fy * frame.height)
+        region = frame.region or (0, 0, frame.width, frame.height)
+        px = int(region[0] + fx * frame.width)
+        py = int(region[1] + fy * frame.height)
+        # ``click_at`` normalizes against the *full* desktop frame, not the
+        # cropped window, so a windowed game's offset is not lost.
+        screen_w, screen_h = self._full_frame_size
+        if screen_w <= 0 or screen_h <= 0:
+            screen_w, screen_h = frame.width, frame.height
         async with self._op_lock:
             injector = self._ensure_injector()
             try:
-                injector.click_at(px, py, screen_w=frame.width, screen_h=frame.height,
+                injector.click_at(px, py, screen_w=screen_w, screen_h=screen_h,
                                   button=button, hold_seconds=0.06)
                 if double:
                     await asyncio.sleep(0.12)
