@@ -1,0 +1,8 @@
+{
+  "plugin.name": "深海迷航 & 零度之下 陪玩",
+  "plugin.description": "让 N.E.K.O 亲自玩《深海迷航》与《深海迷航：零度之下》：主人先手动打开游戏并进入存档，猫娘会截屏判断、主动说明计划、自主探索/采集/制造/建造并尝试推进主线；玩家随时可以碰键接手，或让她停手。",
+  "action.subnautica_play": "让猫娘玩深海迷航",
+  "action.subnautica_stop": "让猫娘停手",
+  "action.subnautica_status": "刷新状态",
+  "action.subnautica_selfcheck": "环境自检"
+}

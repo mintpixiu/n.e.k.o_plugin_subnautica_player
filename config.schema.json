@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "subnautica": {
+      "type": "object",
+      "title": "深海迷航陪玩设置",
+      "x-title-i18n": {"zh-CN": "深海迷航陪玩设置", "en": "Subnautica copilot settings"},
+      "properties": {
+        "capture_backend": {
+          "type": "string",
+          "title": "截图后端",
+          "description": "auto 会自动尝试 DXGI→GDI→Pillow；独占全屏需要 DXGI。",
+          "x-title-i18n": {"zh-CN": "截图后端", "en": "Capture backend"},
+          "x-description-i18n": {"zh-CN": "auto 会自动尝试 DXGI→GDI→Pillow；独占全屏需要 DXGI。", "en": "auto tries DXGI, then GDI, then Pillow. Exclusive fullscreen needs DXGI."},
+          "enum": ["auto", "dxgi", "gdi", "pil"],
+          "default": "auto"
+        },
+        "capture_monitor": {
+          "type": "integer",
+          "title": "显示器编号",
+          "description": "0 是主显示器。",
+          "minimum": 0,
+          "maximum": 8,
+          "default": 0
+        },
+        "min_capture_edge": {
+          "type": "integer",
+          "title": "最小窗口边长",
+          "description": "小于这个尺寸视为最小化/不可用，不按键。",
+          "minimum": 32,
+          "maximum": 2048,
+          "default": 160
+        },
+        "target_fps": {
+          "type": "number",
+          "title": "控制帧率",
+          "description": "每秒截屏/决策次数；3 帧足够探索。",
+          "minimum": 0.5,
+          "maximum": 15,
+          "default": 3.0
+        },
+        "frame_max_edge_px": {
+          "type": "integer",
+          "title": "截图最长边",
+          "description": "送进模型前缩小的最长边。",
+          "minimum": 320,
+          "maximum": 2048,
+          "default": 1152
+        },
+        "frame_jpeg_quality": {
+          "type": "integer",
+          "title": "截图 JPEG 质量",
+          "minimum": 10,
+          "maximum": 95,
+          "default": 72
+        },
+        "frame_max_bytes": {
+          "type": "integer",
+          "title": "单张截图上上限",
+          "description": "超过就自动降质量/尺寸；0 表示不限制（不建议）。",
+          "minimum": 0,
+          "maximum": 360000,
+          "default": 120000
+        },
+        "stream_frames_to_llm": {
+          "type": "boolean",
+          "title": "向猫娘推送截图",
+          "description": "关闭后她只能看状态文字，不能真正看画面。",
+          "default": true
+        },
+        "frame_stream_interval_seconds": {
+          "type": "number",
+          "title": "截图流间隔（秒）",
+          "minimum": 2,
+          "maximum": 120,
+          "default": 10.0
+        },
+        "commentary_interval_seconds": {
+          "type": "number",
+          "title": "主动解说间隔（秒）",
+          "description": "每次都是一次真实 LLM 回合，不要太短。",
+          "minimum": 8,
+          "maximum": 300,
+          "default": 30.0
+        },
+        "urgent_cooldown_seconds": {
+          "type": "number",
+          "title": "紧急提示冷却（秒）",
+          "minimum": 5,
+          "maximum": 300,
+          "default": 24.0
+        },
+        "problem_cooldown_seconds": {
+          "type": "number",
+          "title": "故障提示冷却（秒）",
+          "minimum": 5,
+          "maximum": 600,
+          "default": 60.0
+        },
+        "require_foreground": {
+          "type": "boolean",
+          "title": "仅前台注入",
+          "description": "游戏不在前台时绝不按键。强烈建议保持开启。",
+          "default": true
+        },
+        "autopilot_enabled": {
+          "type": "boolean",
+          "title": "启用即自动开始（旧字段）",
+          "description": "为兼容保留；即使为 true，也需要游戏先在运行。建议 false。",
+          "default": false
+        },
+        "autopilot_tick_seconds": {
+          "type": "number",
+          "title": "控制 tick（秒）",
+          "minimum": 0.1,
+          "maximum": 3,
+          "default": 0.35
+        },
+        "dry_run": {
+          "type": "boolean",
+          "title": "演练模式",
+          "description": "只观察、解说，不按键。第一次使用建议开启。",
+          "default": false
+        },
+        "max_session_minutes": {
+          "type": "number",
+          "title": "单次最长游玩（分钟）",
+          "description": "0 表示不限制；默认 90 分钟。",
+          "minimum": 0,
+          "maximum": 600,
+          "default": 90.0
+        },
+        "blind_frame_limit": {
+          "type": "integer",
+          "title": "黑屏停手阈值",
+          "minimum": 2,
+          "maximum": 120,
+          "default": 8
+        },
+        "auto_resume_from_menu": {
+          "type": "boolean",
+          "title": "自动关菜单",
+          "description": "默认关闭：不会替主人按 Esc，避免把暂停菜单弄乱。",
+          "default": false
+        },
+        "menu_stable_ticks": {
+          "type": "integer",
+          "title": "菜单稳定判定帧数",
+          "minimum": 2,
+          "maximum": 30,
+          "default": 3
+        },
+        "start_in_game_required": {
+          "type": "boolean",
+          "title": "必须看到游戏画面才操作",
+          "description": "防止在主菜单乱按、点新游戏。建议开启。",
+          "default": true
+        },
+        "oxygen_safe_seconds": {
+          "type": "number",
+          "title": "水下多久强制上浮（秒）",
+          "description": "HUD 读不到氧气时的兜底。基础氧气 45 秒。",
+          "minimum": 8,
+          "maximum": 120,
+          "default": 28.0
+        },
+        "look_units_per_degree": {
+          "type": "number",
+          "title": "鼠标灵敏度换算",
+          "description": "每度视角需要的鼠标 counts；转多了就调大。",
+          "minimum": 0.2,
+          "maximum": 200,
+          "default": 13.0
+        },
+        "horizontal_fov": {
+          "type": "number",
+          "title": "水平视场角",
+          "minimum": 50,
+          "maximum": 130,
+          "default": 70.0
+        },
+        "vertical_fov": {
+          "type": "number",
+          "title": "垂直视场角",
+          "minimum": 25,
+          "maximum": 100,
+          "default": 45.0
+        },
+        "invert_y": {
+          "type": "boolean",
+          "title": "反转纵向视角",
+          "default": false
+        },
+        "yield_on_human_input": {
+          "type": "boolean",
+          "title": "玩家碰键就松手",
+          "default": true
+        },
+        "human_input_grace_seconds": {
+          "type": "number",
+          "title": "玩家接手后等待（秒）",
+          "description": "玩家停止操作这么久后自动恢复；F9 硬停不受影响。",
+          "minimum": 2,
+          "maximum": 120,
+          "default": 12.0
+        },
+        "pause_hotkey_enabled": {
+          "type": "boolean",
+          "title": "启用 F9 暂停/继续",
+          "default": true
+        },
+        "objective": {
+          "type": "string",
+          "title": "默认目标",
+          "description": "留空表示使用长期计划的当前阶段。",
+          "default": ""
+        },
+        "plan_steps": {
+          "type": "array",
+          "title": "默认计划步骤",
+          "items": {"type": "string"},
+          "default": []
+        },
+        "keys": {
+          "type": "object",
+          "title": "按键覆盖",
+          "description": "例如 forward=w、down=c、interact=e。留空使用游戏默认键位。",
+          "additionalProperties": {"type": "string"},
+          "default": {}
+        }
+      }
+    }
+  }
+}

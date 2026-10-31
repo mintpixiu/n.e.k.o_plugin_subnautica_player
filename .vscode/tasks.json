@@ -1,0 +1,41 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "N.E.K.O: check subnautica_player",
+      "type": "shell",
+      "command": "uv run neko-plugin check subnautica_player",
+      "options": {
+        "cwd": "${config:nekoPlugin.repoRoot}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "N.E.K.O: sync subnautica_player",
+      "type": "shell",
+      "command": "uv run neko-plugin sync subnautica_player --clean",
+      "options": {
+        "cwd": "${config:nekoPlugin.repoRoot}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "N.E.K.O: check -r subnautica_player",
+      "type": "shell",
+      "command": "uv run neko-plugin check -r subnautica_player",
+      "options": {
+        "cwd": "${config:nekoPlugin.repoRoot}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "N.E.K.O: build subnautica_player",
+      "type": "shell",
+      "command": "uv run neko-plugin build subnautica_player",
+      "options": {
+        "cwd": "${config:nekoPlugin.repoRoot}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+[project]
+name = "subnautica_player"
+version = "1.0.0"
+description = "Let N.E.K.O play Subnautica / Below Zero: screen capture, scan-code input, survival pilot, crafting UI and LLM narration."
+requires-python = ">=3.11"
+authors = [{ name = "呆萌貔貅" }]
+
+# Runtime dependencies are deliberately empty: this plugin uses the standard
+# library plus what the N.E.K.O host already ships (numpy, Pillow).  It never
+# needs cv2/opencv-python, pyautogui or pydirectinput; installing packages into
+# the frozen host interpreter is forbidden by the plugin format.
+dependencies = []
+
+[tool.neko.build]
+# Local pytest run artifacts must never end up in a Market payload.  The
+# default build rules do not know about pytest's per-user tmp directories.
+exclude_dirs = ["pytest-of-*", "pytest-*", ".pytest_cache"]
+exclude = ["pytest-of-*/*", "pytest-*/*", "**/pytest-of-*/*"]

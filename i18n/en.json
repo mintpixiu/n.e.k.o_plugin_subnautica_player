@@ -1,0 +1,8 @@
+{
+  "plugin.name": "Subnautica & Below Zero Play",
+  "plugin.description": "Let N.E.K.O play Subnautica and Subnautica: Below Zero: open the game yourself and load a save, then the catgirl watches the screen, explains her plan, explores and gathers, uses the PDA/fabricator/builder with clicks, and tries to advance the story. Take over at any time; F9 or 'stop' hands the keyboard back.",
+  "action.subnautica_play": "Let the catgirl play",
+  "action.subnautica_stop": "Tell her to stop",
+  "action.subnautica_status": "Refresh status",
+  "action.subnautica_selfcheck": "Environment check"
+}

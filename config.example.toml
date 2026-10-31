@@ -1,0 +1,47 @@
+# Copy the values you want to change into plugin.toml's [subnautica] table.
+# Prefer the Plugin Manager configuration page; restart N.E.K.O afterwards if
+# you edit the installed manifest directly.
+
+[subnautica]
+capture_backend = "auto"
+capture_monitor = 0
+min_capture_edge = 160
+target_fps = 3.0
+frame_max_edge_px = 1152
+frame_jpeg_quality = 72
+frame_max_bytes = 120000
+stream_frames_to_llm = true
+frame_stream_interval_seconds = 10.0
+commentary_interval_seconds = 30.0
+urgent_cooldown_seconds = 24.0
+problem_cooldown_seconds = 60.0
+require_foreground = true
+autopilot_enabled = false
+autopilot_tick_seconds = 0.35
+dry_run = false
+max_session_minutes = 90.0
+blind_frame_limit = 8
+auto_resume_from_menu = false
+menu_stable_ticks = 3
+start_in_game_required = true
+oxygen_safe_seconds = 28.0
+look_units_per_degree = 13.0
+horizontal_fov = 70.0
+vertical_fov = 45.0
+invert_y = false
+yield_on_human_input = true
+human_input_grace_seconds = 12.0
+pause_hotkey_enabled = true
+objective = ""
+plan_steps = []
+
+[subnautica.keys]
+# forward = "w"
+# back = "s"
+# left = "a"
+# right = "d"
+# up = "space"
+# down = "c"
+# interact = "e"
+# use = "mouse1"
+# pda = "tab"
