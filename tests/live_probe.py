@@ -26,14 +26,17 @@ def _find_neko_root() -> Path:
     raise SystemExit("Cannot find the N.E.K.O source root (plugin/sdk/plugin).")
 
 
-sys.path.insert(0, str(_find_neko_root()))
+def _load_plugin():
+    sys.path.insert(0, str(_find_neko_root()))
+    from plugin.plugins.subnautica_player import discovery
+    from plugin.plugins.subnautica_player.service import SubnauticaService
 
-from plugin.plugins.subnautica_player import discovery  # noqa: E402
-from plugin.plugins.subnautica_player.service import SubnauticaService  # noqa: E402
+    return discovery, SubnauticaService
 
 
 async def main(save_frame: str | None) -> int:
-    service = SubnauticaService()
+    discovery, service_cls = _load_plugin()
+    service = service_cls()
     service.configure({})
     service._running = True
     service._scan_running(force=True)
