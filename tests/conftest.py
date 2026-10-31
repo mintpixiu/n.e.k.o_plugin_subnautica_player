@@ -9,7 +9,7 @@ attributes the plugin actually touches, and nothing here performs I/O.
 
 from __future__ import annotations
 
-import importlib.util
+import importlib
 import logging
 import sys
 import types
@@ -150,8 +150,6 @@ _install_stub()
 # Import through the exact package path the host uses.  The synthetic
 # ``plugin`` package points at the real ``N.E.K.O/plugin`` directory so pytest
 # can also import these test modules as package children.
-import importlib  # noqa: E402
-
 _SUBMODULE = "plugin.plugins.subnautica_player"
 if _SUBMODULE not in sys.modules:
     importlib.import_module(_SUBMODULE)
